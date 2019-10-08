@@ -1,0 +1,13 @@
+###################  测试环境配置     ###################
+debug: true
+
+spring:
+  profiles: test
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@//10.16.8.175:1521/crmdev
+    username: crmdev
+    password: crmdev$test
+
+server:
+  port: 8081
