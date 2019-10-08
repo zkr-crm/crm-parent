@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.zsyk.crm.query.mapper.GpLossPayMentDetailMapper">
+
+  <!--缴费信息、理赔 根据角色用户忠诚度用户 -->
+  <select id="selectLoyaltyUserByRole" parameterType="Map" resultType="cn.com.zsyk.crm.query.bo.LoyaltyUserCount">
+		  select count(loyaltyUser) loyaltyUserCount, 0 otherUserCount
+			  from (select count(*) loyaltyUser
+			          from gplossfee t,
+			          gupolicymain gm
+			          <!-- ,gplosspaymentdetail gpl -->
+			         <where> 
+			            t.policyNo = gm.policyNo
+   			         	<!--  t.lossno = gpl.lossno
+						 and t.lossseqno = gpl.lossseqno
+						 and t.totalserialno = gpl.totalserialno -->
+						and gm.SURRENDERIND != 0
+ 						and t.FUNDBACKDATE BETWEEN TO_DATE(#{startDate},'yyyy-mm-dd hh24:mi:ss') AND TO_DATE(#{endDate},'yyyy-mm-dd hh24:mi:ss')
+						 <if test="userId !='dev'">
+						<if test="custAgentList != null and custAgentList.size()>0">
+							and gm.salesmancode in
+							<foreach collection="custAgentList" index="index" item="item" open="("
+								separator="," close=")">
+								#{item}
+							</foreach>
+						</if>
+						</if>
+				  </where>
+			       group by t.payeename
+			       having count(*)  >= #{count})
+			union all
+			select 0 loyaltyUserCount, count(loyaltyUser) otherUserCount
+			  from (select count(*) loyaltyUser
+			         from gplossfee t,
+			          gupolicymain gm
+			         <!-- ,gplosspaymentdetail gpl -->
+			          <where> 
+			            t.policyNo = gm.policyNo
+			         	 <!-- t.lossno = gpl.lossno
+						 and t.lossseqno = gpl.lossseqno
+						 and t.totalserialno = gpl.totalserialno -->
+						 and gm.SURRENDERIND != 0
+						and t.FUNDBACKDATE BETWEEN TO_DATE(#{startDate},'yyyy-mm-dd hh24:mi:ss') AND TO_DATE(#{endDate},'yyyy-mm-dd hh24:mi:ss')
+						 <if test="userId !='dev'">
+						<if test="custAgentList != null and custAgentList.size()>0">
+							and gm.salesmancode in
+							<foreach collection="custAgentList" index="index" item="item" open="("
+								separator="," close=")">
+								#{item}
+							</foreach>
+						</if>
+						</if>
+				  </where>
+			       group by t.payeename
+			       having count(*)  <![CDATA[<]]> #{count})
+  </select>
+ 
+</mapper>

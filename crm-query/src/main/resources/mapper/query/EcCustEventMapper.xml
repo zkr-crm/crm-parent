@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.zsyk.crm.query.mapper.EcCustEventMapper">
+
+   <!-- 根据根据用户查询事件 -->
+  <select id="selectEventByUserId" parameterType="Map" resultType="cn.com.zsyk.crm.query.bo.CusEventCount">
+		  select mc.code_desc eventType, eventCount
+			  from (
+			     	 select event_type, count(*) eventCount from ec_cust_event
+			        	 where 
+			        	 create_user = #{userId}
+			        	 and event_date >= #{startDate}
+	 			         and event_date <![CDATA[<=]]> #{endDate}
+			        	 group by event_type
+			       ) 
+			        ce,
+			       sys_code_mng mc
+			 where mc.code_val = ce.event_type
+			   and mc.code_type = 'EventType'
+  </select>
+ 
+</mapper>
