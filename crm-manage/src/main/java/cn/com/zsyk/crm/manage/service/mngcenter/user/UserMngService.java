@@ -7,6 +7,7 @@ import cn.com.zsyk.crm.common.dto.Result;
 import cn.com.zsyk.crm.common.exception.ServiceException;
 import cn.com.zsyk.crm.common.util.MD5Util;
 import cn.com.zsyk.crm.common.util.PasswdUtil;
+import cn.com.zsyk.crm.common.util.RC4.RC4;
 import cn.com.zsyk.crm.common.util.RestUtil;
 import cn.com.zsyk.crm.common.util.cfca.CfcaEncryptUtils;
 import cn.com.zsyk.crm.generator.EnumType;
@@ -382,7 +383,8 @@ public class UserMngService {
 			throw new ServiceException("用户或密码不正确！");
 		}
 		if (!(userInfo.getUserId().equals(queryUser.getUserId())
-				&& CfcaEncryptUtils.isMatched(userInfo.getPassword(),queryUser.getPassword(),13))) {
+//				&& CfcaEncryptUtils.isMatched(userInfo.getPassword(),queryUser.getPassword(),13))) {
+				&& RC4.isMatched(userInfo.getPassword(),queryUser.getPassword(),"CRM"))) {
 			throw new ServiceException("用户或密码不正确！");
 		}
 

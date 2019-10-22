@@ -15,9 +15,9 @@ info:
   datasource: 
     manage:
       driver-class-name: oracle.jdbc.driver.OracleDriver
-      url: jdbc:oracle:thin:@//10.16.8.175:1521/crmdev
+      url: jdbc:oracle:thin:@//192.168.113.10:1521/crmdev
       username: crmdev
-      password: crmdev$test
+      password: 123456
 
 logging:
   level:
@@ -50,20 +50,20 @@ spring:
     auto: true               #自动启用@EnableAspectJAutoProxy.
     proxy-target-class: true #启动cglib代理
   redis:
-    host: 10.16.8.140
-    password: Rs#12345678
-    port: 16379
+    host: 192.168.113.10
+    password: 123456
+    port: 6379
   rabbitmq:
-    host: 10.16.8.140
+    host: 192.168.113.10
     port: 5672
     username: admin
-    password: admin
+    password: 123456
 #默认数据源配置  
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@//10.16.8.175:1521/crmdev
+    url: jdbc:oracle:thin:@//192.168.113.10:1521/crmdev
     username: crmdev
-    password: crmdev$test
+    password: 123456
     #initialize: true
     #sql-script-encoding: utf-8
     #schema: classpath:database/schema.sql  #指定数据库的建表脚本
@@ -121,7 +121,7 @@ spring:
       percentage: 1 
 #zipkin服务地址
   zipkin: 
-    base-url: http://10.16.8.142:8020
+    base-url: http://127.0.0.1:8020
 
 #注册中心的配置
 #解决EurekaServer不剔除已关停节点的问题（建议开发或测试时使用，生产环境使用默认值）
