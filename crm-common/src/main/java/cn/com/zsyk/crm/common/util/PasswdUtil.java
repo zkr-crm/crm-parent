@@ -1,5 +1,6 @@
 package cn.com.zsyk.crm.common.util;
 
+import cn.com.zsyk.crm.common.util.RC4.RC4;
 import cn.com.zsyk.crm.common.util.cfca.CfcaEncryptUtils;
 
 import java.math.BigInteger;
