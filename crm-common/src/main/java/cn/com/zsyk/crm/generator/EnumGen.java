@@ -66,8 +66,8 @@ public class EnumGen {
 		List<Map<String, String>> list = null;
 		Driver.class.forName("oracle.jdbc.driver.OracleDriver");
 		String sql = "select code_val,code_type,code_name,code_desc,type_desc from sys_code_mng";
-		try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@//10.16.8.175:1521/crmdev", "crmdev",
-				"crmdev$test"); Statement ps = conn.createStatement(); ResultSet rs = ps.executeQuery(sql);) {
+		try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@//122.51.104.204:1521/orcl", "crmdev",
+				"123456"); Statement ps = conn.createStatement(); ResultSet rs = ps.executeQuery(sql);) {
 			list = resultSetToList(rs);
 		}
 		return list;

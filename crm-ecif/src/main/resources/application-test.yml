@@ -5,9 +5,9 @@ spring:
   profiles: test
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@//10.16.8.175:1521/crmdev
+    url: jdbc:oracle:thin:@//122.51.104.204:1521/orcl
     username: crmdev
-    password: crmdev$test
+    password: 123456
 
 server:
   port: 8081

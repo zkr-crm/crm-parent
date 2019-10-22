@@ -26,8 +26,8 @@
         </commentGenerator>
         
         <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
-        	 connectionURL="jdbc:oracle:thin:@//10.16.8.175:1521/crmdev"
-        	 userId="crmdev"  password="crmdev$test">
+        	 connectionURL="jdbc:oracle:thin:@//122.51.104.204:1521/orcl"
+        	 userId="crmdev"  password="123456">
         </jdbcConnection>
 
         <javaModelGenerator targetPackage="cn.com.zsyk.crm.ecif.entity" targetProject="src/main/java"/>

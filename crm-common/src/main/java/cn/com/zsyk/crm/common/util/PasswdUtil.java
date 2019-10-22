@@ -1,6 +1,5 @@
 package cn.com.zsyk.crm.common.util;
 
-import cn.com.zsyk.crm.common.util.RC4.RC4;
 import cn.com.zsyk.crm.common.util.cfca.CfcaEncryptUtils;
 
 import java.math.BigInteger;
@@ -16,7 +15,8 @@ public class PasswdUtil {
     public static String encode(String str) {
         try {
             //return CfcaEncryptUtils.encrypt(str,12);
-            return RC4.put(str, "CRM");
+            return "";
+            //return RC4.put(str, "CRM");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
