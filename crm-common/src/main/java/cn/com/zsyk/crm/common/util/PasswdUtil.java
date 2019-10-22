@@ -15,8 +15,8 @@ public class PasswdUtil {
     public static String encode(String str) {
         try {
             //return CfcaEncryptUtils.encrypt(str,12);
-            return "";
-            //return RC4.put(str, "CRM");
+
+            return RC4.put(str, "CRM");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
