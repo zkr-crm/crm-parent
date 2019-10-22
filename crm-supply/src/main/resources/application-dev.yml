@@ -13,9 +13,9 @@ spring:
     name: crm-supply
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@//10.16.8.175:1521/crmdev
+    url: jdbc:oracle:thin:@//192.168.113.10:1521/crmdev
     username: crmdev
-    password: crmdev$test
+    password: 123456
 smsSend:
   smsUrl: http://10.16.18.201:8001/wssmsif/services/SmsService?wsdl
   phoneNum: 10000

@@ -14,6 +14,7 @@ spring:
       name: ${appName:crm-zuul}
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
+<<<<<<< HEAD
     url: jdbc:oracle:thin:@//122.51.104.204:1521/orcl
     username: crmdev
     password: 123456
@@ -23,9 +24,20 @@ spring:
     port: 6379
   rabbitmq:
     host: 122.51.104.204
+=======
+    url: jdbc:oracle:thin:@//192.168.113.10:1521/crmdev
+    username: crmdev
+    password: 123456
+  redis:
+    host: 192.168.113.10
+    password: 123456
+    port: 6379
+  rabbitmq:
+    host: 192.168.113.10
+>>>>>>> f11f58a111294ba4317ea9b3c43e38d1dabe1ac6
     port: 5672
     username: admin
-    password: admin
+    password: 123456
   jackson:
     time-zone: GMT+8
   sleuth:

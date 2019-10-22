@@ -17,7 +17,11 @@ spring:
 #    username: zkrprpall
 #    password: sinosoft
     driver-class-name: oracle.jdbc.driver.OracleDriver
+<<<<<<< HEAD
     url: jdbc:oracle:thin:@//122.51.104.204:1521/orcl
+=======
+    url: jdbc:oracle:thin:@//192.168.113.10:1521/crmdev
+>>>>>>> f11f58a111294ba4317ea9b3c43e38d1dabe1ac6
     username: crmdev
     password: 123456
 
