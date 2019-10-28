@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.zsyk.crm.ecif.mapper.EcTagDetailMapper" >
+  <resultMap id="BaseResultMap" type="cn.com.zsyk.crm.ecif.entity.EcTagDetail" >
+    <id column="tag_id" property="tagId" jdbcType="VARCHAR" />
+    <result column="tag_type_id" property="tagTypeId" jdbcType="VARCHAR" />
+    <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+    <result column="tag_scope" property="tagScope" jdbcType="VARCHAR" />
+    <result column="tag_scope_val" property="tagScopeVal" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="time_stamp" property="timeStamp" jdbcType="TIMESTAMP" />
+    <result column="rec_stat" property="recStat" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  
+    delete from ec_tag_detail
+    where tag_id = #{tagId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.zsyk.crm.ecif.entity.EcTagDetail" >
+    insert into ec_tag_detail (tag_type_id, tag_name, 
+      tag_scope, tag_scope_val, remark, 
+      create_date, create_time, create_user, 
+      update_date, update_time, update_user, 
+      time_stamp, rec_stat)
+    values (#{tagTypeId,jdbcType=VARCHAR}, #{tagName,jdbcType=VARCHAR}, 
+      #{tagScope,jdbcType=VARCHAR}, #{tagScopeVal,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, 
+      #{timeStamp,jdbcType=TIMESTAMP}, #{recStat,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.zsyk.crm.ecif.entity.EcTagDetail" >
+    
+    update ec_tag_detail
+    set tag_type_id = #{tagTypeId,jdbcType=VARCHAR},
+      tag_name = #{tagName,jdbcType=VARCHAR},
+      tag_scope = #{tagScope,jdbcType=VARCHAR},
+      tag_scope_val = #{tagScopeVal,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      time_stamp = #{timeStamp,jdbcType=TIMESTAMP},
+      rec_stat = #{recStat,jdbcType=VARCHAR}
+    where tag_id = #{tagId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   
+    select tag_id, tag_type_id, tag_name, tag_scope, tag_scope_val, remark, create_date, 
+    create_time, create_user, update_date, update_time, update_user, time_stamp, rec_stat
+    from ec_tag_detail
+    where tag_id = #{tagId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByTagNamType" resultMap="BaseResultMap"  parameterType="cn.com.zsyk.crm.ecif.entity.EcTagDetail" >
+  
+    select tag_id, tag_type_id, tag_name, tag_scope, tag_scope_val, remark, create_date, 
+    create_time, create_user, update_date, update_time, update_user, time_stamp, rec_stat
+    from ec_tag_detail 
+    where  tag_name = #{tagName,jdbcType=VARCHAR} and 
+           tag_type_id = #{tagTypeId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByEntity" resultMap="BaseResultMap"  parameterType="cn.com.zsyk.crm.ecif.entity.EcTagDetail" >
+  
+    select tag_id, tag_type_id, tag_name, tag_scope, tag_scope_val, remark, create_date, 
+    create_time, create_user, update_date, update_time, update_user, time_stamp, rec_stat
+    from ec_tag_detail 
+    where 1=1
+    <if test="tagTypeId != null and tagTypeId != '' ">
+     	and tag_type_id = #{tagTypeId,jdbcType=VARCHAR} </if>
+    <if test="tagName != null and tagName != '' ">
+     	and tag_name = #{tagName,jdbcType=VARCHAR} </if>
+  </select>
+</mapper>

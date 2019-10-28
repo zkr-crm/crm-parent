@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.zsyk.crm.query.mapper.EcCustEventMapper">
+
+   <!-- 根据根据用户查询事件 -->
+  <select id="selectEventByUserId" parameterType="Map" resultType="cn.com.zsyk.crm.query.bo.CusEventCount">
+		  select mc.code_desc eventType, eventCount
+			  from (
+			     	 select event_type, count(*) eventCount from ec_cust_event
+			        	 where 
+			        	 create_user = #{userId}
+			        	   and event_date is not null
+	  						and to_date(event_date,'yyyy-MM-dd') >(sysdate -1)
+			        	 <!--and event_date >= #{startDate}
+	 			         and event_date <![CDATA[<=]]> #{endDate}-->
+			        	 group by event_type
+					  <!--select event_type, count(1) as eventCount
+					  from sys_app_remind
+					  where receiv_user = #{receivUser}
+					  group by event_type-->
+			       )
+			        ce,
+			       sys_code_mng mc
+			 where mc.code_val = ce.event_type
+			   and mc.code_type = 'EventType'
+  </select>
+
+  <select id="selectEventByCondition" parameterType="Map" resultType="cn.com.zsyk.crm.query.bo.CusEventCount">
+      select mc.code_desc eventType, eventCount
+        from (
+            select ece.event_type, count(*) eventCount from ec_cust_event ece
+                 left join ec_cust_per ecp on ece.cust_no = ecp.cust_no
+                 where 1=1
+                 and ece.event_date >= to_char(sysdate,'yyyy-MM-dd')
+                 and ecp.rec_stat = '0'
+                 and ece.rec_stat = '0'
+				<if test="custSource != null and custSource !=''">
+				and ecp.cust_source =#{custSource,jdbcType=VARCHAR}
+				</if>
+				<if test="custTyp != null and custTyp !=''">
+				and ecp.cust_typ =#{custTyp,jdbcType=VARCHAR}
+				</if>
+				<if test="keyCustFlg != null and keyCustFlg !=''">
+				and ecp.key_cust_flg =#{keyCustFlg,jdbcType=VARCHAR}
+				</if>
+                 group by ece.event_type
+             )
+              ce,
+             sys_code_mng mc
+       where mc.code_val = ce.event_type
+         and mc.code_type = 'EventType'
+  </select>
+</mapper>

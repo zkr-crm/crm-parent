@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.zsyk.crm.manage.mapper.SysMonitorTaskMapper" >
+  <resultMap id="BaseResultMap" type="cn.com.zsyk.crm.manage.entity.SysMonitorTask" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="model_type" property="modelType" jdbcType="VARCHAR" />
+    <result column="risk_level" property="riskLevel" jdbcType="VARCHAR" />
+    <result column="deal_level" property="dealLevel" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+    <result column="is_risk" property="isRisk" jdbcType="VARCHAR" />
+    <result column="deal_result" property="dealResult" jdbcType="VARCHAR" />
+    <result column="deal_idea" property="dealIdea" jdbcType="VARCHAR" />
+    <result column="task_state" property="taskState" jdbcType="VARCHAR" />
+    <result column="operater" property="operater" jdbcType="VARCHAR" />
+    <result column="operate_date" property="operateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, model_type, risk_level, 
+      deal_level, account, serial_number, 
+      is_risk, deal_result, deal_idea, 
+      task_state, operater, operate_date
+    from sys_monitor_task where task_state='1'
+  </select>
+  
+  <insert id="insert" parameterType="cn.com.zsyk.crm.manage.entity.SysMonitorTask" >
+    insert into sys_monitor_task (id, model_type, risk_level, 
+      deal_level, account, serial_number, 
+      is_risk, deal_result, deal_idea, 
+      task_state, operater, operate_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{modelType,jdbcType=VARCHAR}, #{riskLevel,jdbcType=VARCHAR}, 
+      #{dealLevel,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{serialNumber,jdbcType=VARCHAR}, 
+      #{isRisk,jdbcType=VARCHAR}, #{dealResult,jdbcType=VARCHAR}, #{dealIdea,jdbcType=VARCHAR}, 
+      #{taskState,jdbcType=VARCHAR}, #{operater,jdbcType=VARCHAR}, #{operateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.zsyk.crm.manage.entity.SysMonitorTask" >
+    update sys_monitor_task set task_state = #{taskState,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
