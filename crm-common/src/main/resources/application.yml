@@ -1,0 +1,201 @@
+###################  公共信息配置，所有环境共用     ###################
+#debug: true #查看springboot开启了哪些自动配置
+
+#info一般配置用户自定义信息，在actuatr的/info端点可显示（使用@***@从pom.xml中获取信息）
+info:
+  app: 
+    name: "@project.name@" 
+    description: "@project.description@"
+    version: "@project.version@"
+    spring-boot-version: "@spring-boot.version@"
+  #系统日志开关
+  log-switch: 
+    service: true
+  #common模块自定义的数据源
+  datasource: 
+    manage:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      url: jdbc:oracle:thin:@//122.51.104.204:1521/orcl
+      username: crmdev
+      password: 123456
+
+logging:
+  level:
+    root: warn
+    cn.com.zsyk.crm: warn
+    org.springframework: warn
+  config: classpath:log4j2.xml
+
+server: 
+  #servlet-path: 设定DispatcherServlet的监听路径，默认为: /
+  #context-parameters: 
+    #key: value   #配置ServletContext的init parameters
+  tomcat: 
+    basedir: .            # 工作目录为项目根目录
+    max-threads: 400      # 最大的工作线程数，默认为200
+    max-connections: 500  # 接受和处理的最大连接数
+    accesslog: 
+       enabled: true          #开启访问日志
+       directory: tomcat_logs #访问日志目录，默认在basedir/logs
+
+spring:
+  profiles:
+    active: dev    #开启生效的环境
+  #autoconfigure: 
+    #exclude:      #排除自动配置的类
+  #config: 
+    #location:     #配置系统配置文件的目录
+    #name:         #配置系统配置文件的名称，默认为application
+  aop: 
+    auto: true               #自动启用@EnableAspectJAutoProxy.
+    proxy-target-class: true #启动cglib代理
+  redis:
+    host: 122.51.104.204
+    password:
+    port: 6379
+  rabbitmq:
+    host: 122.51.104.204
+    port: 5672
+    username: admin
+    password: admin
+#默认数据源配置  
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@//122.51.104.204:1521/orcl
+    username: crmdev
+    password: 123456
+    #initialize: true
+    #sql-script-encoding: utf-8
+    #schema: classpath:database/schema.sql  #指定数据库的建表脚本
+    #data: classpath:database/data.sql      #指定数据库的insert脚本
+    tomcat: 
+      initial-size: 5
+      max-idle: 30
+      max-wait: 10000
+      max-active: 100
+      validation-query: SELECT 1
+      test-on-borrow: true
+      test-on-return: false
+      test-while-idle: true
+    #使用druid数据源
+    #type: com.alibaba.druid.pool.DruidDataSource
+    #druid: 
+    #  initial-size: 1
+    #  min-idle: 1
+    #  max-active: 20
+    #  stat-view-servlet: 
+    #    allow: true
+    #  filters: stat
+    #  maxActive: 20
+    #  initialSize: 1
+    #  maxWait: 60000
+    #  minIdle: 1
+    #  timeBetweenEvictionRunsMillis: 60000
+    #  minEvictableIdleTimeMillis: 300000
+    #  validationQuery: select 'x'
+    #  testWhileIdle: true
+    #  testOnBorrow: true
+    #  testOnReturn: false
+    #  poolPreparedStatements: true
+    #  maxOpenPreparedStatements: 20
+#事务配置
+  transaction: 
+    default-timeout: 180  #事务超时时间（s）        
+    rollback-on-commit-failure: true
+
+#http配置（编码配置）
+  http:
+    encoding:
+      force: true
+      enabled: true     
+      charset: UTF-8
+      
+#sleuth服务追踪的配置
+  sleuth: 
+    enabled: true 
+    log: 
+      slf4j: 
+        enabled: true
+    sampler: 
+      #默认抽样收集的百分比，默认为0.1，生产中使用默认值否则影响性能
+      percentage: 1 
+#zipkin服务地址
+  zipkin: 
+    base-url: http://10.16.8.142:8020
+
+#注册中心的配置
+#解决EurekaServer不剔除已关停节点的问题（建议开发或测试时使用，生产环境使用默认值）
+#  1、配置开启健康检查
+#  2、配置续约时间和过期时间
+eureka: 
+  client:
+    initial-instance-info-replication-interval-seconds: 20
+    serviceUrl:
+      #多地址可通过","分割: http://eureka1:7001/eureka,http://eureka2:7002/eureka
+      defaultZone: http://127.0.0.1:8010/eureka #http://127.0.0.1:8010/eureka
+    healthcheck: 
+      #开启健康检查（依赖spring-boot-starter-actuator）
+      enabled: true  
+    #Client间隔多久去拉取服务端的注册信息（s），默认为60s。如果要迅速获取服务注册状态，可以缩小该值。
+    registry-fetch-interval-seconds: 20   
+  instance:
+    #是否优先使用IP地址作为主机名的标识
+    prefer-ip-address: true 
+    #自定义实例的ID，默认为${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+    instanceId: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port} 
+    #配置服务名，默认取spring.application.name，如果没有则为unknown
+    #appname: ${spring.application.name}
+    #自定义应用状态页面地址，默认为/info
+    #status-page-url-path: /info  
+    #自定义应用健康检查地址，默认为/health 
+    #healthCheckUrlPath: /health 
+    
+    #设置Client向EurekaServer发送心跳(续期)的时间间隔（s），默认是30s。可以解决Eureka注册服务慢的问题，
+    #注意：在生产中，最好坚持使用默认值，因为在服务器内部有一些计算，他们对续约做出假设。
+    lease-renewal-interval-in-seconds: 15
+    
+    #设置过期剔除时间，默认90s。EurekaServer上一次收到client的心跳之后，等待下一次心跳的超时时间。
+    #超过该时间之后服务端会将该服务实例从服务清单中剔除，从而禁止服务调用请求被发送到该实例上
+    #  如果该值太大，则很可能将流量转发过去的时候，该instance已经不存活了。
+    #  如果该值设置太小了，则instance则很可能因为临时的网络抖动而被摘除掉。
+    #  该值至少应该大于leaseRenewalIntervalInSeconds。
+    lease-expiration-duration-in-seconds: 45
+
+#客户端负载均衡
+#ribbon:
+#  eureka:
+#    enabled: false # 默认为true。如果设置为false，Ribbon将不会从Eureka中获得服务列表，而是使用静态配置的服务列表。静态服务列表可使用：<client>.ribbon.listOfServers来指定;
+#crm-ecif: 
+#  ribbon: 
+#    listOfServers: 127.0.0.1:8080
+#crm-manage: 
+#  ribbon: 
+#    listOfServers: 127.0.0.1:8082
+
+#断路器
+#hystrix: 
+#  command: 
+#    default: 
+#      execution: 
+#        isolation: 
+#          thread: 
+#            timeoutInMilliseconds: 3000  #配置 HystrixCommand执行的超时时间，默认1000
+
+
+#mybatis配置
+mybatis:
+  executorType: REUSE
+  #mapper-packages:  cn.com.zsyk.crm.ecif.mapper         #Mapper接口扫描目录，需要每个模块配置
+  #mapper-locations: classpath*:mapper/ecif/*.xml       #xml文件扫描目录，需要每个模块配置
+  #type-aliases-package: cn.com.zsyk.crm.ecif.entity     #别名扫描目录，不支持通配符，需要每个模块配置
+
+#mybatis分页插件
+pagehelper:
+    helperDialect: oracle
+    reasonable: true #分页合理化参数
+    supportMethodsArguments: true
+
+#关闭访问Actuator的端点时的权限认证
+management: 
+  security: 
+    enabled: false

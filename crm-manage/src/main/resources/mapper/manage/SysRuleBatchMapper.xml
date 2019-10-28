@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ai.ocrm.rule.dao.StrategyMapper" >
+  
+  <select id="example4RuleBatch" resultType="java.util.Map">
+    SELECT t1.strategy_id,t2.combine_rule_id,t2.combine_order,t3.combine_rule_name,t3.combine_expression,t3.remark,t3.creater
+    FROM ec_cust_per t1
+    LEFT JOIN ec_cust_habitavo t2    
+    ON t1.strategy_id = t2.strategy_id
+    LEFT JOIN rule_combine_rule t3
+    ON t2.combine_rule_id = t3.combine_rule_id
+    WHERE t1.strategy_id = #{strategyId}
+ 
+  </select>
+</mapper>

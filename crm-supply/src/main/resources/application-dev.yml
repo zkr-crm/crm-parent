@@ -1,0 +1,31 @@
+###################  开发环境配置     ###################
+#info一般配置用户自定义信息，在actuatr的/info端点可显示（使用@***@从pom.xml中获取信息）
+info:
+  log-switch: 
+    service: true
+server:
+  port: 8086
+  context-path: / #设定应用的context-path
+    
+spring:
+  profiles: dev  
+  application: 
+    name: crm-supply
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@//122.51.104.204:1521/orcl
+      #url: jdbc:oracle:thin:@//10.16.8.175:1521/crmdev
+      username: crmdev
+      password: 123456
+smsSend:
+  #smsUrl: http://10.16.18.201:8001/wssmsif/services/SmsService?wsdl
+  smsUrl: '测试和正式环境通用短信平台，请注意测试发送短信时控制发送得对象，避免发给任意用户，导致被投诉'
+  phoneNum: 10000
+  userName: crm
+  passWord: Khfw54*9
+  agentCode: '0100000700'
+  serviceType: CRM
+mybatis:
+  mapper-packages:  cn.com.zsyk.crm.supply.mapper        #Mapper接口扫描目录
+  mapper-locations: classpath:mapper/*.xml       #xml文件扫描目录
+  type-aliases-package: cn.com.zsyk.crm.supply.entity    #别名扫描目录

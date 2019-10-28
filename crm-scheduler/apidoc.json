@@ -1,0 +1,8 @@
+{
+  "name": "CRM-scheduler",
+  "version": "0.0.1",
+  "description": "调度API文档",
+  "title": "scheduler api",
+  "url" : "http://127.0.0.1:8000",
+  "sampleUrl" : "http://127.0.0.1:8000"
+}

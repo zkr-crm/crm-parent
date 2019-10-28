@@ -1,0 +1,41 @@
+spring: 
+  profiles: signle
+  
+server:
+  port: 8010 
+
+#解决EurekaServer不踢出已关停的节点的问题(仅建议开发或测试时使用，生产环境建议默认值)
+#  1、关闭自我保护
+#  2、按需配置清理无效节点的时间间隔
+eureka: 
+  server: 
+    #是否开启自我保护模式，默认为true。
+    #当EurekaServer短时间内丢失过多的客户端时（可能发生了网络故障），那么节点将进入保护模式，不再注销任何微服务，当网络故障恢复后，该节点会自动退出自我保护模式
+    enable-self-preservation: false 
+    #清理失效客户端节点的时间间隔（单位ms，默认是60000）
+    eviction-interval-timer-in-ms: 30000
+  instance:
+    hostname: 127.0.0.1
+    ip-address: 127.0.0.1
+    #hostname: 10.16.8.142
+    #ip-address: 10.16.8.142
+    #instanceId: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}   #自定义实例ID
+    prefer-ip-address: true
+    lease-expiration-duration-in-seconds: 10 # 没有心跳的淘汰时间
+    lease-renewal-interval-in-seconds: 5 # 心跳间隔
+  client:   
+    #是否注册为Eureka客户端。默认设置下，EurekaServer也会将自己作为客户端来尝试注册它自己，单例部署时禁用它的客户端注册行为；
+    register-with-eureka: false
+    #是否从EurekaServer读取注册信息
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+      #包含验证信息的连接: http://${security.user.name}:${security.user.password}@${eureka.instance.hostname}:${server.port}/eureka
+
+#Eureka加入安全验证
+#security: 
+#  basic:
+#    enabled: true #eureka用户是否认证
+#  user:
+#    name: eureka #eureka 用户名
+#    password: eureka #eureka 密码

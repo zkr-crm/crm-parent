@@ -1,0 +1,6 @@
+server:
+  port: 20020
+  context-path: / #设定应用的context-path
+spring:
+  application:
+      name: ${appName:crm-admin}
