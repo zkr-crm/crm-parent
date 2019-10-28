@@ -1,7 +1,0 @@
-spring: 
-  profiles:
-    active: signle #开启生效环境
-    #active: eureka1 #开启生效环境，集群环境需在host文件中加入eureka1、eureka2
-    #active: eureka2 #开启生效环境，集群环境需在host文件中加入eureka1、eureka2
-  application: 
-    name: eureka-server
