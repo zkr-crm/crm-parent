@@ -13,10 +13,10 @@ spring:
     name: crm-supply
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
+    #url: jdbc:oracle:thin:@//10.16.8.175:1521/crmdev
     url: jdbc:oracle:thin:@//122.51.104.204:1521/orcl
-      #url: jdbc:oracle:thin:@//10.16.8.175:1521/crmdev
-      username: crmdev
-      password: 123456
+    username: crmdev
+    password: 123456
 smsSend:
   #smsUrl: http://10.16.18.201:8001/wssmsif/services/SmsService?wsdl
   smsUrl: '测试和正式环境通用短信平台，请注意测试发送短信时控制发送得对象，避免发给任意用户，导致被投诉'

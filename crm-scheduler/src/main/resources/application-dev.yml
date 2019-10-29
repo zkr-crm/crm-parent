@@ -12,14 +12,14 @@ server:
 scheduler:
   target:
     ecif:
-      ip: 10.16.8.142
+      ip: 127.0.0.1
       port: 8080
     manage:
-      ip: 10.16.8.142
+      ip: 127.0.0.1
       port: 8082
     ocrm:
-      ip: 10.16.8.142
+      ip: 127.0.0.1
       port: 8083
     query:
-      ip: 10.16.8.142
+      ip: 127.0.0.1
       port: 8085

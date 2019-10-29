@@ -1,5 +1,6 @@
 package cn.com.zsyk.crm.common.util.cfca;
 
+import cn.com.zsyk.crm.common.util.RC4.RC4;
 import org.acegisecurity.providers.encoding.PlaintextPasswordEncoder;
 
 
@@ -14,6 +15,7 @@ public class CfcaPasswordEncoder extends PlaintextPasswordEncoder {
 	}
 
 	public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
-		return CfcaEncryptUtils.isMatched(rawPass, encPass, 13);
+		//return CfcaEncryptUtils.isMatched(rawPass, encPass, 13);
+		return RC4.isMatched(rawPass, encPass, "CRM");
 	}
 }
