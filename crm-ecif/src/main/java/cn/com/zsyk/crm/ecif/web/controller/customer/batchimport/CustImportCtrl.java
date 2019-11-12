@@ -113,11 +113,11 @@ public class CustImportCtrl {
 	 */
 	
 	@RequestMapping(path = "/crm/ecif/cust/upload", method = RequestMethod.POST)
-    public int uploadFile(@RequestParam(value = "file" , required = true) MultipartFile file) throws Exception {
+    public String uploadFile(@RequestParam(value = "file" , required = true) MultipartFile file,@RequestParam(value = "fileName" , required = true) String filename,@RequestParam(value = "custAgent" , required = true) String custAgent) throws Exception {
         //deal with file
 		 //得到文件名
 		String path=System.getProperty("user.dir")+"/";
-        String filename=file.getOriginalFilename();        
+      //  String filename=file.getOriginalFilename();
         
         InputStream inputStream = file.getInputStream();
         
@@ -131,8 +131,8 @@ public class CustImportCtrl {
         else{
             throw new Exception("上传失败：上传文件不能为空");
         }
-		int succeedQry = service.importExcel(filename);
-		return succeedQry;
+		String str= service.importExcel(filename,custAgent);
+		return str;
     }
 	
 }

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.com.zsyk.crm.ecif.entity.*;
+import cn.com.zsyk.crm.ecif.mapper.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,16 +24,6 @@ import cn.com.zsyk.crm.common.util.DateUtil;
 import cn.com.zsyk.crm.common.util.IdGenerator;
 import cn.com.zsyk.crm.common.util.JsonUtil;
 import cn.com.zsyk.crm.ecif.bo.cust.PerCustBaseInfo;
-import cn.com.zsyk.crm.ecif.entity.EcCustName;
-import cn.com.zsyk.crm.ecif.entity.EcCustPer;
-import cn.com.zsyk.crm.ecif.entity.EcCustSaleChgTrace;
-import cn.com.zsyk.crm.ecif.entity.EcImportDets;
-import cn.com.zsyk.crm.ecif.entity.EcImportLog;
-import cn.com.zsyk.crm.ecif.mapper.EcCustEntMapper;
-import cn.com.zsyk.crm.ecif.mapper.EcCustNameMapper;
-import cn.com.zsyk.crm.ecif.mapper.EcCustPerMapper;
-import cn.com.zsyk.crm.ecif.mapper.EcCustProposalMapper;
-import cn.com.zsyk.crm.ecif.mapper.EcCustSaleChgTraceMapper;
 import cn.com.zsyk.crm.ecif.service.customer.portrait.CustCareerService;
 import cn.com.zsyk.crm.ecif.service.customer.portrait.CustCertService;
 import cn.com.zsyk.crm.ecif.service.customer.portrait.CustContactService;
@@ -81,6 +73,8 @@ public class CustomerImportService {
 	private CustEduService custEduService;
 	@Autowired
 	CustCareerService custCareerService;
+    @Autowired
+    private EcCustManagerMapper ecCustManagerMapper;
 
 	/**
 	 * 客户分配
@@ -124,20 +118,28 @@ public class CustomerImportService {
 			return "客户类型不能为空";
 		}
 
-		if (StringUtils.isEmpty(perCustBaseInfo.getSex())) {
-			return  "性别不能为空";
-		}
+//		if (StringUtils.isEmpty(perCustBaseInfo.getSex())) {
+//			return  "性别不能为空";
+//		}
 
 		if (StringUtils.isEmpty(perCustBaseInfo.getCustName())) {
 			return  "姓名不能为空";
 		}
+
+        if (StringUtils.isEmpty(perCustBaseInfo.getPhoneNumber())) {
+            return  "电话号码不能为空";
+        }
+
+        if (StringUtils.isEmpty(perCustBaseInfo.getCustSource())) {
+            return  "客户来源不能为空";
+        }
 
 
 
 		//String custNo = custService.addPerCustInfo(perCustBaseInfo);
 		/** 基本信息 */
 		// 客户号
-		String custNo = String.valueOf(IdGenerator.getDistributedID());
+		String custNo = "C"+String.valueOf(IdGenerator.getDistributedID()).substring(8,18);
 		perCustBaseInfo.setCustNo(custNo);
 		EcCustPer ecCustPer = new EcCustPer();
 		// 客户号 custNo
@@ -149,9 +151,18 @@ public class CustomerImportService {
 		// 客户经理 custAgent;
 		if (StringUtils.isNotEmpty(perCustBaseInfo.getCustAgent())) {
 			ecCustPer.setCustAgent(perCustBaseInfo.getCustAgent());
+            EcCustManager ecCustManager = new EcCustManager();
+            ecCustManager.setCustNo(custNo);
+            ecCustManager.setCustAgent(perCustBaseInfo.getCustAgent());
+            ecCustManager.setRiseTime(DateUtil.nowDateTimeStamp());
+            ecCustManager.setRecStat("0");
+            List<EcCustManager> listTmp=ecCustManagerMapper.selectAgentByConditions(ecCustManager);
+            if(listTmp==null || listTmp.size()==0){
+                ecCustManagerMapper.insert(ecCustManager);
+            }
 		}
 		// 客户类型 custTyp;
-		if (StringUtils.isNotEmpty(perCustBaseInfo.getCustTyp())) {
+ 		if (StringUtils.isNotEmpty(perCustBaseInfo.getCustTyp())) {
 			ecCustPer.setCustTyp(perCustBaseInfo.getCustTyp());
 		}
 		// 客户来源 custSource;
@@ -172,6 +183,14 @@ public class CustomerImportService {
 		if (StringUtils.isNotEmpty(perCustBaseInfo.getNationality())) {
 			ecCustPer.setNationality(perCustBaseInfo.getNationality());
 		}
+		// 民族 nation
+        if (StringUtils.isNotEmpty(perCustBaseInfo.getNation())) {
+            ecCustPer.setNation(perCustBaseInfo.getNation());
+        }
+        // 政治面貌 PolitSts
+        if (StringUtils.isNotEmpty(perCustBaseInfo.getPolitSts())) {
+            ecCustPer.setPolitSts(perCustBaseInfo.getPolitSts());
+        }
 		// 婚姻状况 marrigeSts;
 		if (StringUtils.isNotEmpty(perCustBaseInfo.getMarrigeSts())) {
 			ecCustPer.setMarrigeSts(perCustBaseInfo.getMarrigeSts());
@@ -286,7 +305,7 @@ public class CustomerImportService {
  * @throws BiffException 
  * @throws ParseException 
     */
-   public int importExcel(String fileName) throws BiffException, IOException, ParseException{
+   public String importExcel(String fileName,String custAgent) throws BiffException, IOException, ParseException{
 	   // String fileName = "导出客户.xls";
        // Vector<EcProduct> v = new Vector<EcProduct>();
        String path=System.getProperty("user.dir")+"/";
@@ -297,6 +316,8 @@ public class CustomerImportService {
            // 存入成功数、失败数
            int succeedQty = 0;
            int failureQty = 0;
+           String failReason="";
+           String str="";
            int dataRows = rows - 1;
            // 导入编码
            String importCd = IdGenerator.getUUID();
@@ -337,11 +358,11 @@ public class CustomerImportService {
                p.setCustName(sheet.getCell(0, i).getContents());
                p.setPhoneNumber(sheet.getCell(1, i).getContents());
                p.setSex(sheet.getCell(2, i).getContents());
-               if (sheet.getCell(3, i).getContents() == null) {
-            	   importReason = "出生日期不能为空";
-       			}else {
+//               if (sheet.getCell(3, i).getContents() == null) {
+//            	   importReason = "出生日期不能为空";
+//       			}else {
        				p.setBirthDate(df2.parse(sheet.getCell(3, i).getContents()));
-       			}
+//       			}
                p.setCertTyp(sheet.getCell(4, i).getContents());
                p.setCertNo(sheet.getCell(5, i).getContents());
                p.setNation(sheet.getCell(6, i).getContents());
@@ -351,8 +372,8 @@ public class CustomerImportService {
                p.setMarrigeSts(sheet.getCell(10, i).getContents());               
                p.setEduDegree(sheet.getCell(11, i).getContents());
                p.setBloodTyp(sheet.getCell(12, i).getContents());               
-               p.setHeight(new BigDecimal((sheet.getCell(13, i).getContents() == null||sheet.getCell(13, i).getContents() == "")?sheet.getCell(13, i).getContents():"0"));
-               p.setWeight(new BigDecimal((sheet.getCell(14, i).getContents() == null||sheet.getCell(14, i).getContents() == "")?sheet.getCell(14, i).getContents():"0"));
+               p.setHeight(new BigDecimal((sheet.getCell(13, i).getContents() == null||sheet.getCell(13, i).getContents() == "")?"0":sheet.getCell(13, i).getContents()));
+               p.setWeight(new BigDecimal((sheet.getCell(14, i).getContents() == null||sheet.getCell(14, i).getContents() == "")?"0":sheet.getCell(14, i).getContents()));
                p.setOtherTel(sheet.getCell(15, i).getContents());
                p.setHomeTel(sheet.getCell(16, i).getContents());
                p.setOfficeTel(sheet.getCell(17, i).getContents());
@@ -364,7 +385,7 @@ public class CustomerImportService {
                p.setWhtHouse(sheet.getCell(23, i).getContents());
                p.setWhtCar(sheet.getCell(24, i).getContents());
                p.setLicensePlate(sheet.getCell(25, i).getContents());
-               p.setAnnualIncome(new BigDecimal((sheet.getCell(26, i).getContents() == null||sheet.getCell(26, i).getContents() == "")?sheet.getCell(26, i).getContents():"0"));
+               p.setAnnualIncome(new BigDecimal((sheet.getCell(26, i).getContents() == null||sheet.getCell(26, i).getContents() == "")?"0":sheet.getCell(26, i).getContents()));
                p.setWhtMedInsur(sheet.getCell(27, i).getContents());
                p.setHabit(sheet.getCell(28, i).getContents());
                p.setWechatNo(sheet.getCell(29, i).getContents());
@@ -372,7 +393,7 @@ public class CustomerImportService {
                p.setMicroblog(sheet.getCell(31, i).getContents());
                p.setAlipay(sheet.getCell(32, i).getContents());
                p.setEmailAddr(sheet.getCell(33, i).getContents());
-               
+               p.setCustAgent(custAgent);
                // 客户类型
                p.setCustTyp(EnumType.CustType.per_latent_cust.value);
                
@@ -453,7 +474,6 @@ public class CustomerImportService {
                //v.add(p);
                // 存入客户表
                int count = 0;
-        	                   
             	   if(importReason.equals("")) {
                 	   importReason = addCust(p);
             	   }
@@ -462,6 +482,7 @@ public class CustomerImportService {
                 	   importDets.setImportSts("1");// 1-完成 0-失败
             	   }else {
                 	   failureQty ++;
+                	   failReason+="第"+i+"条失败原因:"+importReason+",";
                 	   importDets.setImportSts("0");// 1-完成 0-失败
             	   }
                    // 记录导入日志明细
@@ -494,9 +515,10 @@ public class CustomerImportService {
            importLog.setFailureQty(failureQty);
            importLog.setSucceedQty(succeedQty);
            importLogService.addImportLog(importLog);
-           
+           str+="导入成功"+succeedQty+"条";
+           str+=","+failReason;
            book.close();
-           return succeedQty;
+           return str;
 
    }		
    /**保存文件
