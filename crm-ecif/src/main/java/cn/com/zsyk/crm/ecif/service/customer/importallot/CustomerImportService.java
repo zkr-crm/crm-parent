@@ -464,13 +464,18 @@ public class CustomerImportService {
                    }
                }
 
- 
+
                if(custList.size() == 0) {
             	   custList.add(p.getCustName() +"+"+p.getPhoneNumber());
-               }else if(custList.contains(p.getCustName() +"+"+p.getPhoneNumber())) {
-            	   importReason = "客户信息重复";
+               }else{
+                   if(custList.contains(p.getCustName() +"+"+p.getPhoneNumber())) {
+                       importReason = "客户信息重复";
+                   }else{
+                       custList.add(p.getCustName() +"+"+p.getPhoneNumber());
+                   }
                }
-               
+
+
                //v.add(p);
                // 存入客户表
                int count = 0;
@@ -482,7 +487,7 @@ public class CustomerImportService {
                 	   importDets.setImportSts("1");// 1-完成 0-失败
             	   }else {
                 	   failureQty ++;
-                	   failReason+="第"+i+"条失败原因:"+importReason+",";
+                	   failReason+=",第"+i+"条失败原因:"+importReason;
                 	   importDets.setImportSts("0");// 1-完成 0-失败
             	   }
                    // 记录导入日志明细
@@ -516,7 +521,7 @@ public class CustomerImportService {
            importLog.setSucceedQty(succeedQty);
            importLogService.addImportLog(importLog);
            str+="导入成功"+succeedQty+"条";
-           str+=","+failReason;
+           str+=failReason;
            book.close();
            return str;
 
