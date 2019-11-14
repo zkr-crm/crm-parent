@@ -2,11 +2,13 @@ package cn.com.zsyk.crm.ecif.web.controller.customer.batchimport;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import cn.com.zsyk.crm.ecif.bo.cust.ExportCustBaseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,10 +100,10 @@ public class CustImportCtrl {
 	 * @apiSuccess {EcImportLog} data 返回值对象
 	 */
     @RequestMapping(value = "/crm/ecif/cust/accountFile",method = RequestMethod.GET)
-    public void  accountFile(EcImportLog importLog, String importDetsSts, HttpServletResponse response) throws Exception {
-         response.setHeader("Content-Disposition", "attachment;filename=" +importLog.getFileNam() );
+    public void  accountFile(@RequestParam(value="baseinfo",required = true) ArrayList<ExportCustBaseInfo> baseinfo, HttpServletResponse response) throws Exception {
+         response.setHeader("Content-Disposition", "attachment;filename=" +"客户导出信息.xls" );
          response.setContentType("application/octet-stream;charset=utf-8");
-         service.exportExcel(importLog, importDetsSts, response.getOutputStream());
+         service.exportExcel(baseinfo, response.getOutputStream());
    }
     
     /**
