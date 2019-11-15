@@ -99,7 +99,24 @@ public class EnterCtrl {
 		res.setData(p);
 		return res;
 	}
+	/**
+	 * @api {GET} /crm/manage/entersByEnterCode 根据code查询机构树信息
+	 * @apiDescription
+	 * @apiName getEntersByEnterCode
+	 * @apiGroup Enterprise
+	 *
+	 * @apiParam {String} enterCode 上级机构信息代码
+	 *
+	 * @apiSuccess {Object} Response 返回值对象
+	 */
+	@RequestMapping(path = "/crm/manage/entersByEnterCode", method = RequestMethod.GET)
+	public Result getEntersByEnterCode(String enterCode) {
+		Result res = new Result();
+		List<SysEnterInfo> enterList = service.getEntersByEnterCode(enterCode);
 
+		res.setData(enterList);
+		return res;
+	}
 	/**
 	 * @api {POST} /crm/manage/enter 新增一条机构信息
 	 * @apiDescription 

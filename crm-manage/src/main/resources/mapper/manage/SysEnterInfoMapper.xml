@@ -140,7 +140,14 @@
         and rec_stat = #{recStat}   
     </if>
   </select>
-  
+  <!-- 获取机构下级机构信息（获取所有下级）-->
+  <select id="getEntersByEnterCode" resultMap="BaseResultMap">
+    select enter_code, enter_name, enter_head,enter_level, super_enter_code, super_enter, enter_addr,
+    enter_tel, enter_web, enter_email, busi_summ
+    from sys_enter_info a
+    START WITH a.ENTER_CODE = #{enterCode,jdbcType=VARCHAR}
+    CONNECT BY PRIOR a.ENTER_CODE=a.SUPER_ENTER_CODE
+  </select>
   <!-- 获取直接机构下级机构信息（间接下级不获取）-->  
   <select id="getUnderEnter" resultMap="BaseResultMap">
     select enter_code, enter_name, enter_head,enter_level, super_enter_code, super_enter, enter_addr, 

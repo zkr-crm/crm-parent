@@ -137,6 +137,24 @@ public class UserMngCtrl {
 		res.setData(userList);
 		return res;
 	}
+	/**
+	 * @api {GET} /crm/manage/usermng/usersBusiOppByEntity 按条件查询所有用户列表
+	 * @apiDescription
+	 * @apiName getUsersBusiOppByEntity
+	 * @apiGroup UserMng
+	 *
+	 * @apiParam {SysUserInfo} user 用户信息对象
+	 *
+	 * @apiSuccess {SysUserInfo} data 用户信息列表
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(path = "/crm/manage/usermng/getUsersByEnterCodes", method = RequestMethod.GET)
+	public Result getUsersByEnterCodes(String codes) {
+		Result res = new Result();
+		List<SysUserInfo> userList = service.getUsersByEnterCodes(codes);
+		res.setData(userList);
+		return res;
+	}
 
 	/**
 	 * @api {GET} /crm/manage/usermng/user 查询一条用户记录

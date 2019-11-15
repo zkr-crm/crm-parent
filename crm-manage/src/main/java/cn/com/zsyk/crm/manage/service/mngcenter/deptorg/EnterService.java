@@ -57,7 +57,17 @@ public class EnterService {
 		enterList = mapper.selectAll();
 		return enterList;
 	}
+	/**
+	 * 根据enterCode获得所有下级机构信息列表方法
+	 *
+	 * @return 机构信息列表
+	 */
+	public List<SysEnterInfo> getEntersByEnterCode(String enterCode) {
 
+		List<SysEnterInfo> enterList = new ArrayList<SysEnterInfo>();
+		enterList = daoUtil.selectList("cn.com.zsyk.crm.manage.mapper.SysEnterInfoMapper.getEntersByEnterCode",enterCode);;
+		return enterList;
+	}
 	/**
 	 * 获得所有机构信息列表方法（带排序）
 	 * 

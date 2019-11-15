@@ -143,7 +143,23 @@ public class UserMngService {
 		}
 		return lstUser;
 	}
+	/**
+	 * 根据入参对象获取所有用户信息商机的方法
+	 *
+	 * @return 所有用户信息的列表
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<SysUserInfo> getUsersByEnterCodes(String codes) {
 
+		String [] enterList=codes.split(",");
+		Map map = new HashMap();
+		map.put("enterList", enterList);
+
+		List<SysUserInfo> userInfoListTemp = daoUtil
+				.selectList("cn.com.zsyk.crm.manage.mapper.SysUserInfoMapper.selectEmployeeByDataAuth", map);
+
+		return userInfoListTemp;
+	}
 	/**
 	 * 新增一条用户信息
 	 * 
