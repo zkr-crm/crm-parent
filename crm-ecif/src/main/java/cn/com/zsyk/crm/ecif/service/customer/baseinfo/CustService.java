@@ -476,9 +476,9 @@ public class CustService {
 		if (null == perCustBaseInfo) {
 			throw new ServiceException("参数不能为空");
 		}
-		if (StringUtils.isEmpty(perCustBaseInfo.getCustNo())) {
+		/*if (StringUtils.isEmpty(perCustBaseInfo.getCustNo())) {
 			throw new ServiceException("客户号不能为空");
-		}
+		}*/
 
 //		if (StringUtils.isEmpty(perCustBaseInfo.getSex())) {
 //			throw new ServiceException("性别不能为空");

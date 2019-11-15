@@ -291,16 +291,16 @@ public class CustContactService {
 	 */
 	public void saveOrUpdateContactAddr(PerCustBaseInfo perCustBaseInfo) {
 
-		// 客户号不能为空
+		// 客户号不能为空00
 		if (StringUtils.isEmpty(perCustBaseInfo.getCustNo())) {
 			throw new ServiceException("客户号不能为空");
 		}
 
 		// 手机号码不能为空
-		if (StringUtils.isEmpty(perCustBaseInfo.getPhoneNumber())
+		/*if (StringUtils.isEmpty(perCustBaseInfo.getPhoneNumber())
 				&&!EnumType.MergeSplitAction.merge_approv_pass.desc.equals(perCustBaseInfo.getMergeMark())) {
 			throw new ServiceException("手机号码不能为空");
-		}
+		}*/
 			this.updateCustNoPhone(perCustBaseInfo.getCustNo(),EnumType.RecStat.delete.getValue());
 		List<EcCustPhone> phonesList = perCustBaseInfo.getPhoneList();
 		if(phonesList!=null && phonesList.size()!=0){
