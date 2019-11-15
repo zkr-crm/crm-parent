@@ -15,7 +15,7 @@ public class CfcaPasswordEncoder extends PlaintextPasswordEncoder {
 	}
 
 	public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
-		//return CfcaEncryptUtils.isMatched(rawPass, encPass, 13);
-		return RC4.isMatched(rawPass, encPass, "CRM");
+		//return RC4.isMatched(rawPass, encPass, "CRM");
+		return CfcaEncryptUtils.isMatched(rawPass, encPass, 13);
 	}
 }

@@ -307,6 +307,10 @@ public class StrategyController {
     public Result findRelations(String strategyId){
         Result res = new Result();
 
+        strategyService.findRelations(strategyId);
+        strategyService.findRelations(strategyId);
+
+
         List<Map> relation = strategyService.findRelations(strategyId);
         Map<String,Object> treeNodeMap = new HashMap<>();
         treeNodeMap.put("name",relation.get(0).get("strategy_name"));

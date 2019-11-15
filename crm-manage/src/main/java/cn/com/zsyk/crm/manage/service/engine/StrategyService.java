@@ -295,9 +295,15 @@ public class StrategyService {
 	 */
 	public List<Map> findRelations(String strategyId) {
 		List<Map> strategyCombineRels = strategyMapper.findStrategyCombineRels(strategyId);
-		for (Map strategyCombineRel : strategyCombineRels) {
-			String combineRuleId = (String) strategyCombineRel.get("combine_rule_id");
-			strategyCombineRel.put("combine_rules", combineRuleMapper.findCombineBaseRels(combineRuleId));
+		try{
+			for (Map strategyCombineRel : strategyCombineRels) {
+				String combineRuleId = (String) strategyCombineRel.get("COMBINE_RULE_ID");
+				List combine_rules = combineRuleMapper.findCombineBaseRels(combineRuleId);
+				strategyCombineRel.put("combine_rules", combine_rules);
+			}
+			return strategyCombineRels;
+		}catch (Exception e){
+			System.out.println("我有毛病");
 		}
 		return strategyCombineRels;
 	}

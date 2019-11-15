@@ -397,8 +397,8 @@ public class UserMngService {
 			throw new ServiceException("该用户无使用权限!");
 		}
 		if (!(userInfo.getUserId().equals(queryUser.getUserId())
-				//&& CfcaEncryptUtils.isMatched(userInfo.getPassword(),queryUser.getPassword(),13))) {
-				&& RC4.isMatched(userInfo.getPassword(),queryUser.getPassword(),"CRM"))) {
+				&& CfcaEncryptUtils.isMatched(userInfo.getPassword(),queryUser.getPassword(),13))) {
+				//&& RC4.isMatched(userInfo.getPassword(),queryUser.getPassword(),"CRM"))) {
 			throw new ServiceException("用户或密码不正确！");
 		}
 

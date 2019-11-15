@@ -183,8 +183,8 @@
         t1.base_rule_id,
         t1.rule_code,
         t1.rule_name,
-        utl_raw.cast_to_varchar2(t1.expression),
-        utl_raw.cast_to_varchar2(t1.remark),
+        utl_raw.cast_to_varchar2(t1.expression) expression,
+        utl_raw.cast_to_varchar2(t1.remark) remark,
         t1.version,
         t1.create_date,
         t1.create_time,
@@ -226,10 +226,10 @@
         t1.time_stamp,
         t1.rec_stat
         <if test="isUsed == 0">
-            HAVING isUsed = 0
+            HAVING COUNT(t3.combine_rule_name) = 0
         </if>
         <if test="isUsed == 1">
-            HAVING isUsed > 0
+            HAVING COUNT(t3.combine_rule_name) > 0
         </if>
         order by t1.create_time desc
     </select>

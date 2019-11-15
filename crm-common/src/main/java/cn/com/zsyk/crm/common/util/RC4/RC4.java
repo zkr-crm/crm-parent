@@ -146,8 +146,8 @@ public class RC4 {
         System.out.println("加密为>>>" + str1);
 
         //解密
-        String str2 = "";
-        String key2 = "CRM";
+        String str2 = "0f4fe3fcbc049133b43f";
+        String key2 = "10.9.237.76";
         String password2 = get(str2, key2);
         System.out.println("解密为>>>" + password2);
 
@@ -155,9 +155,9 @@ public class RC4 {
         String str3 = "";
         for (String ipPsssword:str3.split("\n")) {
             String ip = ipPsssword.split("\t")[0];
-            String password = ipPsssword.split("\t")[1];
-            password = RC4.get(password,ip);
-            System.out.println(ip + "\t" + password);
+            String password0 = ipPsssword.split("\t")[1];
+            String password = RC4.get(password0,ip);
+            System.out.println(ip + "\t" + password + "\t" + password0);
         }
 
     }

@@ -59,7 +59,7 @@ public class CustGrpMemberCtrl {
 	 * @apiSuccess {OcCustGrpMember} data 返回值对象
 	 */
 	@RequestMapping(path = "/crm/ocrm/CustGroupMng/getCustListByEntity", method = RequestMethod.GET)
-	public Result getCustListByEntity(OcCustGrpMember custGrpMember) {
+	public Result getCustListByEntity(OcCustGrpMember custGrpMember,String telephone,String certNo) {
 
 		Result res = new Result();
 
