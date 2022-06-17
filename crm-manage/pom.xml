@@ -10,7 +10,7 @@
 	<description>管理微服务</description>
 
 	<properties>
-		<drools.version>6.4.0.Final</drools.version>
+		<drools.version>7.60.0.Final</drools.version>
 	</properties>
 	<dependencies>
 		<dependency>
